@@ -32,9 +32,21 @@ Passwordless email authentication with NextAuth, Prisma, and role-based access f
 
    SEED_ADMIN_EMAIL="admin@example.com"
    SEED_PROCTOR_EMAIL="proctor@example.com" # optional
+
+   AWS_ACCESS_KEY_ID="development-access-key"
+   AWS_SECRET_ACCESS_KEY="development-secret-key"
+   # AWS_SESSION_TOKEN="" # optional for temporary credentials
+   S3_BUCKET_NAME="local-preflight-uploads"
+   S3_BUCKET_REGION="us-east-1"
+   # Optional overrides for local object storage such as MinIO
+   # S3_ENDPOINT="http://127.0.0.1:9000"
+   # S3_SIGNED_URL_TTL="300"
+
+   CONSENT_POLICY_VERSION="1.0"
    ```
 
    - Mailhog (default port `1025`) and Mailtrap are supported. When the SMTP server does not require authentication, omit `EMAIL_SERVER_USER` and `EMAIL_SERVER_PASSWORD`.
+   - The S3 values above default to development-friendly settings. Provide production credentials and buckets when deploying the identity capture workflow.
 3. Apply the Prisma schema and generate the client:
    ```bash
    npm run db:push
@@ -58,6 +70,11 @@ Passwordless email authentication with NextAuth, Prisma, and role-based access f
 - All other routes are accessible to any authenticated user.
 
 Unauthorized requests are redirected to `/unauthorized`. Unauthenticated users are redirected to `/sign-in` with a callback URL.
+
+## Candidate preflight flow
+
+- `/exam/[examSlug]/start?token=...` opens the candidate preflight checklist. The link validates the shared access token, creates a pending `ExamSession`, stores demographic details, and walks the candidate through device checks, consent, and optional ID capture.
+- When all required steps pass, the session transitions to `READY` and the candidate is redirected to `/exam/[examSlug]/monitor` to await the live exam start.
 
 ## Related documentation
 

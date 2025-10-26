@@ -41,6 +41,23 @@ export async function createPreflightSession(input: CreatePreflightSessionInput)
     }
   });
 
+  await prisma.auditLog.create({
+    data: {
+      examId: session.examId,
+      examSessionId: session.id,
+      targetType: "examSession",
+      targetId: session.id,
+      action: "candidate.preflight.created",
+      description: "Candidate preflight session initialized",
+      metadata: {
+        candidateName: input.candidateName ?? null,
+        candidateEmail: input.candidateEmail ?? null,
+        userAgent: input.userAgent ?? null,
+        ipAddress: input.ipAddress ?? null
+      }
+    }
+  });
+
   return {
     session,
     sessionSecret: secret
