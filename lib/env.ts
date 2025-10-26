@@ -12,7 +12,15 @@ const envSchema = z.object({
   EMAIL_SERVER_PASSWORD: z.string().optional(),
   EMAIL_SERVER_SECURE: z.enum(["true", "false"]).optional(),
   SEED_ADMIN_EMAIL: z.string().email().optional(),
-  SEED_PROCTOR_EMAIL: z.string().email().optional()
+  SEED_PROCTOR_EMAIL: z.string().email().optional(),
+  AWS_ACCESS_KEY_ID: z.string().min(1).default("development-access-key"),
+  AWS_SECRET_ACCESS_KEY: z.string().min(1).default("development-secret-key"),
+  AWS_SESSION_TOKEN: z.string().optional(),
+  S3_BUCKET_NAME: z.string().min(1).default("local-preflight-uploads"),
+  S3_BUCKET_REGION: z.string().min(1).default("us-east-1"),
+  S3_SIGNED_URL_TTL: z.coerce.number().int().positive().max(3600).default(300),
+  S3_ENDPOINT: z.string().url().optional(),
+  CONSENT_POLICY_VERSION: z.string().min(1).default("1.0")
 });
 
 type RawEnv = z.infer<typeof envSchema>;
@@ -36,13 +44,27 @@ const env: AppEnv = {
   EMAIL_SERVER_SECURE: rawSecure ? rawSecure === "true" : rest.EMAIL_SERVER_PORT === 465
 };
 
-type NonEmptyStringKeys = "NEXTAUTH_SECRET" | "DATABASE_URL" | "EMAIL_FROM" | "EMAIL_SERVER_HOST";
+type NonEmptyStringKeys =
+  | "NEXTAUTH_SECRET"
+  | "DATABASE_URL"
+  | "EMAIL_FROM"
+  | "EMAIL_SERVER_HOST"
+  | "AWS_ACCESS_KEY_ID"
+  | "AWS_SECRET_ACCESS_KEY"
+  | "S3_BUCKET_NAME"
+  | "S3_BUCKET_REGION"
+  | "CONSENT_POLICY_VERSION";
 
 const requiredKeys: NonEmptyStringKeys[] = [
   "NEXTAUTH_SECRET",
   "DATABASE_URL",
   "EMAIL_FROM",
-  "EMAIL_SERVER_HOST"
+  "EMAIL_SERVER_HOST",
+  "AWS_ACCESS_KEY_ID",
+  "AWS_SECRET_ACCESS_KEY",
+  "S3_BUCKET_NAME",
+  "S3_BUCKET_REGION",
+  "CONSENT_POLICY_VERSION"
 ];
 
 for (const key of requiredKeys) {

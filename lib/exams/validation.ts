@@ -26,6 +26,8 @@ export const examFormSchema = z.object({
     .int("Duration must be a whole number")
     .min(5, "Duration must be at least 5 minutes")
     .max(480, "Duration must be 480 minutes or less"),
+  requiresCamera: z.boolean().default(true),
+  requiresMicrophone: z.boolean().default(true),
   requiresScreenShare: z.boolean().default(false),
   requiresIdCapture: z.boolean().default(false),
   retentionDays: z
@@ -51,6 +53,8 @@ export const examDefaultValues: ExamFormValues = {
   description: undefined,
   status: ExamStatus.DRAFT,
   durationMinutes: 90,
+  requiresCamera: true,
+  requiresMicrophone: true,
   requiresScreenShare: true,
   requiresIdCapture: true,
   retentionDays: 365,

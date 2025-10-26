@@ -204,7 +204,21 @@ export function ExamForm(props: ExamFormProps) {
         {errors.status && <FieldError message={errors.status.message} />}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "1rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem" }}>
+        <CheckboxField
+          id="requiresCamera"
+          label="Requires camera"
+          description="Ensures a webcam is active for identity verification and exam monitoring."
+          register={register("requiresCamera")}
+          disabled={isSubmitting}
+        />
+        <CheckboxField
+          id="requiresMicrophone"
+          label="Requires microphone"
+          description="Capture audio to monitor exam conditions and flag potential anomalies."
+          register={register("requiresMicrophone")}
+          disabled={isSubmitting}
+        />
         <CheckboxField
           id="requiresScreenShare"
           label="Requires screen share"
@@ -297,10 +311,10 @@ type CheckboxFieldProps = {
   label: string;
   description: string;
   disabled: boolean;
-  registration: UseFormRegisterReturn;
+  register: UseFormRegisterReturn;
 };
 
-function CheckboxField({ id, label, description, disabled, registration }: CheckboxFieldProps) {
+function CheckboxField({ id, label, description, disabled, register }: CheckboxFieldProps) {
   return (
     <label
       htmlFor={id}
@@ -316,7 +330,7 @@ function CheckboxField({ id, label, description, disabled, registration }: Check
       }}
     >
       <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <input type="checkbox" id={id} {...registration} disabled={disabled} />
+        <input type="checkbox" id={id} {...register} disabled={disabled} />
         <strong>{label}</strong>
       </span>
       <span style={{ fontSize: "0.85rem", color: "#4b5563" }}>{description}</span>
