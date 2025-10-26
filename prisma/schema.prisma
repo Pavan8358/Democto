@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PROCTOR
+  CANDIDATE
+}
+
+enum ExamStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum ExamSessionStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  FLAGGED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(CANDIDATE)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts   Account[]
+  sessions   Session[]
+  auditLogs  AuditLog[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Exam {
+  id                   String        @id @default(cuid())
+  slug                 String        @unique
+  title                String
+  description          String?
+  status               ExamStatus    @default(DRAFT)
+  durationMinutes      Int
+  requiresScreenShare  Boolean       @default(false)
+  requiresIdCapture    Boolean       @default(false)
+  retentionDays        Int           @default(365)
+  instructions         String?       @db.Text
+  candidateAccessToken String        @unique
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  sessions  ExamSession[]
+  auditLogs AuditLog[]
+}
+
+model ExamSession {
+  id        String            @id @default(cuid())
+  examId    String
+  status    ExamSessionStatus @default(SCHEDULED)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@index([examId, status])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorId     String?
+  examId      String?
+  targetType  String
+  targetId    String?
+  action      String
+  description String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  exam  Exam? @relation(fields: [examId], references: [id], onDelete: SetNull)
+
+  @@index([targetType, targetId])
+  @@index([createdAt])
+}
