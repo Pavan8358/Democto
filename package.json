@@ -10,7 +10,11 @@
     "type-check": "tsc --noEmit",
     "test": "echo \"No tests have been configured yet\"",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "db:seed": "prisma db seed"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,mjs,cjs}": [
@@ -21,7 +25,11 @@
       "prettier --write"
     ]
   },
+  "prisma": {
+    "seed": "pnpm tsx prisma/seed.ts"
+  },
   "dependencies": {
+    "@prisma/client": "^5.22.0",
     "next": "16.0.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
@@ -37,7 +45,9 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
+    "prisma": "^5.22.0",
     "tailwindcss": "^4.1.16",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   },
   "engines": {
