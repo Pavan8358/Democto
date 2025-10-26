@@ -1,0 +1,3 @@
+# Prisma Migrate lockfile
+# This file ensures migrations are applied with a consistent provider.
+provider = "postgresql"
