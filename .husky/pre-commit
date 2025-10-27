@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+set -e
+
+run() {
+  if command -v pnpm >/dev/null 2>&1; then
+    pnpm "$@"
+  else
+    corepack pnpm "$@"
+  fi
+}
+
+run lint-staged
+run type-check
