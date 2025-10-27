@@ -1,5 +1,14 @@
 #!/usr/bin/env sh
-. "$(dirname "$0")/_/husky.sh"
 
-pnpm lint-staged
-pnpm type-check
+set -e
+
+run() {
+  if command -v pnpm >/dev/null 2>&1; then
+    pnpm "$@"
+  else
+    corepack pnpm "$@"
+  fi
+}
+
+run lint-staged
+run type-check

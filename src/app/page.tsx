@@ -1,15 +1,21 @@
+import { randomUUID } from "node:crypto";
+
+import { SessionMonitor } from "@/components/proctor/SessionMonitor";
+
 export default function Home() {
+  const sessionId = randomUUID();
+
   return (
-    <section className="space-y-8">
+    <section className="space-y-10">
       <div className="space-y-2">
         <p className="text-sm font-medium uppercase tracking-wide text-zinc-500">Welcome</p>
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Automated exam proctoring, simplified
         </h1>
         <p className="max-w-2xl text-base text-zinc-600">
-          This MVP provides the foundation for building scheduling, monitoring, and review workflows
-          for online assessments. Use this space to surface the most important tasks, analytics, and
-          alerts for proctors.
+          This MVP now ships with automated webcam, microphone, and attention detection. Use the
+          monitoring panel below to validate flag generation before connecting to the production
+          proctor dashboard.
         </p>
       </div>
 
@@ -29,6 +35,8 @@ export default function Home() {
           </p>
         </div>
       </div>
+
+      <SessionMonitor sessionId={sessionId} />
     </section>
   );
 }

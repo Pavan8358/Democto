@@ -33,4 +33,11 @@ Greenfield Next.js 14 project that serves as the foundation for an automated exa
 - **Husky + lint-staged** pre-commit workflow that runs linting and type checks before changes land in git.
 - **GitHub Actions** workflow to run linting and type checks on every pull request.
 
+## Monitoring & QA
+
+- Launch the home page to access the real-time session monitor that raises face, speaking, and
+  attention flags.
+- Follow `docs/manual-qa/detection-flags.md` for a step-by-step validation script covering the core
+  flag scenarios.
+
 Happy shipping! 🚀

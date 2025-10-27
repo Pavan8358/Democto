@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "test": "echo \"No tests have been configured yet\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "format": "prettier --write .",
     "prepare": "husky"
   },
@@ -22,6 +23,8 @@
     ]
   },
   "dependencies": {
+    "@tensorflow-models/blazeface": "^0.1.0",
+    "@tensorflow/tfjs": "^4.22.0",
     "next": "16.0.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
@@ -38,7 +41,8 @@
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "tailwindcss": "^4.1.16",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^2.1.4"
   },
   "engines": {
     "node": ">=20.0.0"
