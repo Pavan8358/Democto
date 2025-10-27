@@ -1,0 +1,31 @@
+# Common dependencies & build artifacts
+node_modules/
+.pnpm-store/
+.npm/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Logs & diagnostics
+logs/
+*.log
+reports/
+coverage/
+
+# Environment files
+.env
+.env.*
+
+# Editor & OS artifacts
+.DS_Store
+.idea/
+.vscode/
+
+# Build outputs
+/dist
+/build
+.next/
+out/
+.tmp/
