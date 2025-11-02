@@ -33,4 +33,8 @@ Greenfield Next.js 14 project that serves as the foundation for an automated exa
 - **Husky + lint-staged** pre-commit workflow that runs linting and type checks before changes land in git.
 - **GitHub Actions** workflow to run linting and type checks on every pull request.
 
+## Deployment runbooks
+
+Provisioning checklists, environment variable references, and validation steps for staging/production live in [docs/deployment.md](./docs/deployment.md).
+
 Happy shipping! 🚀
